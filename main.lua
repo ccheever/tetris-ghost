@@ -1,29 +1,30 @@
-local Object = require "classic"
+local TetrisPiece = require "TetrisPiece"
 
-local TetrisPiece = Object:extend()
-function TetrisPiece:new(opts)
-    for k, v in opts do
-        self[k] = v
-    end
+local shapes
+do
+    local X = true
+    local _ = false
+    shapes = {
+        {{X, X, X, X}, {_, _, _, _}},
+        {{X, X, X, _}, {_, _, X, _}},
+        {{X, X, X, _}, {X, _, _, _}},
+        {{X, X, _, _}, {X, X, _, _}},
+        {{_, X, X, _}, {X, X, _, _}},
+        {{X, X, X, _}, {_, X, _, _}},
+        {{X, X, _, _}, {_, X, X, _}},
+    }
 end
 
-local shapes = {
-    {{1, 1, 1, 1}, {0, 0, 0, 0}},
-    {{1, 1, 1, 0}, {0, 0, 1, 0}},
-    {{1, 1, 1, 0}, {1, 0, 0, 0}},
-    {{1, 1, 0, 0}, {1, 1, 0, 0}},
-    {{0, 1, 1, 0}, {1, 1, 0, 0}},
-    {{1, 1, 1, 0}, {0, 1, 0, 0}},
-    {{1, 1, 0, 0}, {0, 1, 1, 0}}
-}
-
+local rod = TetrisPiece {shape = shapes[2]}
+print("A rod: ", rod)
 function love.draw()
     love.graphics.print("Hello World!", 400, 300)
+    rod:draw(300, 100, 30)
 
     for i, bm in ipairs(shapes) do
         for y, row in ipairs(bm) do
             for x, val in ipairs(row) do
-                if val > 0 then
+                if val then
                     local size = 10
                     love.graphics.rectangle("fill", 100 + x * size, 50 * i + 100 + y * size, size, size)
                 end
